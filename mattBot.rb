@@ -9,7 +9,7 @@ class Bot
 		@nick = 'WeatherBot'
 		@channel = '#bitmaker'
 		@response_prompt = 'privmsg #bitmaker :'
-		@callings = ['weather', 'temperature', 'current_conditions']
+		@callings = ['current weather', 'forecast']
 	end
 
 	def run
@@ -21,8 +21,11 @@ class Bot
 			@callings.each do |c|
 				wasCalled = true if msg.include? c
 			end
+			
 			if msg.include? @response_prompt and wasCalled
 				server.puts "PRIVMSG #{@channel} : #{current}"
+			elsif msg.incl? @response_prompt and wasCalled
+				server.puts "PRIVMSG #{@channel} : #{forecast}"
 			end
 		end
 	end
