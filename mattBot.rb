@@ -4,28 +4,37 @@ require 'socket'
 class Bot
 	attr_accessor :server
 	def initialize
-		@server = 'chat.freenode.net'
+		@server = 'chat.freenode.net'  #in runner
 		@port = '6667'
-		@nick = 'WeatherBot'
+		@nick = 'BetterWeatherBot'
 		@channel = '#bitmaker'
 		@response_prompt = 'privmsg #bitmaker :'
-		@callings = ['current weather', 'forecast']
+		@callings = ['current', 'forecast', 'weather']
 	end
 
 	def run
+		responses = {
+			['current'] => current,
+			['forecast'] => forecast
+		}
+
 		until server.eof? do 
 			msg = @server.gets.downcase
 			puts msg
 
+			matched_keyword = []
+
 			wasCalled = false
+
 			@callings.each do |c|
-				wasCalled = true if msg.include? c
+				if msg.include? c
+					matched_keyword << c
+					wasCalled = true
+				end
 			end
-			
+
 			if msg.include? @response_prompt and wasCalled
-				server.puts "PRIVMSG #{@channel} : #{current}"
-			elsif msg.incl? @response_prompt and wasCalled
-				server.puts "PRIVMSG #{@channel} : #{forecast}"
+				server.puts "PRIVMSG #{@channel} : #{responses[matched_keyword]}"
 			end
 		end
 	end
