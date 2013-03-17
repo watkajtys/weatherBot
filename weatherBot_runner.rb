@@ -1,6 +1,5 @@
-# require_relative "mattBot.rb"
-
-# Bot.new().run
+require_relative "mattBot.rb"
 
 
-#Add server info into runner
+weather = Bot.new
+weather.server_connect
