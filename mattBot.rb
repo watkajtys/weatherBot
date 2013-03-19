@@ -4,6 +4,9 @@ require 'socket'
 class Bot
 	attr_accessor :server, :msg
 	def initialize
+		@current_reporter = WeatherReporter.new
+		@forecast_reporter = WeatherReporter.new
+		@temp_reporter = WeatherReporter.new
 		@server = 'chat.freenode.net'  #in runner
 		@port = '6667'
 		@nick = 'BetterWeatherBot'
@@ -43,18 +46,15 @@ class Bot
 	end
 
 	def current
-		new_weather_conditions = WeatherReporter.new
-		return new_weather_conditions.get_conditions
+		@current_reporter.get_conditions
 	end
 
 	def forecast
-		new_weather_forecast = WeatherReporter.new
-		return new_weather_forecast.get_forecast_today
+		@forecast_reporter.get_forecast_today
 	end
 
 	def temp
-		new_weather_forecast = WeatherReporter.new
-		return new_weather_forecast.get_temperatures_week
+		@temp_reporter.get_temperatures_week
 	end
 
 
@@ -63,10 +63,21 @@ class Bot
 		server.puts "USER WeatherBot 0 * WeatherBot"
 		server.puts "NICK #{@nick}"
 		server.puts "JOIN #{@channel}"
-		server.puts "PRIVMSG #{@channel} :Hi, I'm WeatherBot. Ask me for the current conditions or for the forcast today!"
+		server.puts "PRIVMSG #{@channel} :Hi, I'm WeatherBot. Ask me CURRENT for the current conditions, FORECAST for the forcast today, or TEMPERATURE for the temperature for the next three days!!"
 	end
 end
 
 weatherBot = Bot.new
 weatherBot.server_connect
 weatherBot.respond
+
+
+
+
+
+
+
+
+
+
+

@@ -6,4 +6,6 @@ class BotTest < Test::Unit::TestCase
 		bot = Bot.new
 		assert_equal "PRIVMSG #{@channel} :Weather Bot reporting in!" bot.server_connect
 	end
+
+	
 end
